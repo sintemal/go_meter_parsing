@@ -22,3 +22,13 @@ func Parse(data string) (formats.MeterFormat, error) {
 		return nil, fmt.Errorf("Unknown format")
 	}
 }
+
+func MeterValuekWh(m formats.MeterFormat) (float64, error) {
+	if m.MeterUnit() == "kWh" {
+		return m.MeterValue(), nil
+	} else if m.MeterUnit() == "Wh" {
+		return m.MeterValue() / 1000, nil
+	} else {
+		return 0, fmt.Errorf("Invalid unit")
+	}
+}
