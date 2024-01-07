@@ -1,4 +1,4 @@
-package main
+package go_meter_parsing
 
 import (
 	"fmt"
