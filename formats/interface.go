@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sintemal/go_meter_parser/formats/mennekes"
-	"github.com/sintemal/go_meter_parser/formats/ocmf"
-	"github.com/sintemal/go_meter_parser/formats/pcdf"
+	"github.com/sintemal/go_meter_parsing/formats/mennekes"
+	"github.com/sintemal/go_meter_parsing/formats/ocmf"
+	"github.com/sintemal/go_meter_parsing/formats/pcdf"
 )
 
 type MeterFormat interface {
