@@ -19,3 +19,19 @@ func TestWrapTransparenzsoftware(t *testing.T) {
 	}
 	t.Logf("WrapTransparenzsoftware() output = %v", out)
 }
+
+func TestWrapTransparenzsoftware2(t *testing.T) {
+	payload := "AP;0;3;AMVBBEIORR2RGJLJ6YRZUGACQAXSDFCL66EIP3N7;BJKGK43UIRSXMAAROYYDCMZNUYFACRC2I4ADGAABIAAAAAAAQ6ACMAD5CH4FWAIAAEEAB7Y6ACJD2AAAAAAAAABRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAAAAEIAAAAA====;IGRCBV3TL45XIGPJU7QGD3H4V6ICQ75GLPWEFNEKZX3RTTKJI2FBXHPCWUIWL5OENEHE3SQRVACHG===;"
+	meter_format, err := Parse(payload)
+	if err != nil {
+		t.Errorf("Parse() error = %v", err)
+	}
+
+	out, err := WrapTransparenzsoftware(meter_format, payload, "")
+
+	if err != nil {
+		t.Errorf("WrapTransparenzsoftware() error = %v", err)
+	}
+
+	t.Logf("WrapTransparenzsoftware() output = %v", out)
+}

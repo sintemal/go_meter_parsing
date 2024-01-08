@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/sintemal/go_meter_parsing/formats"
+	"github.com/sintemal/go_meter_parsing/formats/alfen"
 	"github.com/sintemal/go_meter_parsing/formats/mennekes"
 	"github.com/sintemal/go_meter_parsing/formats/ocmf"
 	"github.com/sintemal/go_meter_parsing/formats/pcdf"
@@ -19,6 +20,8 @@ func Parse(data string) (formats.MeterFormat, error) {
 		return ocmf.Parse(data)
 	} else if strings.HasPrefix(data, "<ChargingProcess") {
 		return mennekes.Parse(data)
+	} else if strings.HasPrefix(data, "AP") {
+		return alfen.Parse(data)
 	} else {
 		return nil, fmt.Errorf("Unknown format")
 	}
@@ -54,7 +57,7 @@ type Value struct {
 	TransactionId string     `xml:"transactionId,attr"`
 	Context       string     `xml:"context,attr"`
 	SignedData    SignedData `xml:"signedData"`
-	PublicKey     PublicKey  `xml:"publicKey,omitempty"`
+	PublicKey     *PublicKey `xml:"publicKey,omitempty"`
 }
 
 // Define struct for values
@@ -82,11 +85,21 @@ func WrapTransparenzsoftware(m formats.MeterFormat, data string, publickey strin
 		Data:          data,
 	}
 
-	value := Value{
-		TransactionId: "1",
-		Context:       "Transaction.Begin",
-		SignedData:    signedData,
-		PublicKey:     pk,
+	var value Value
+
+	if publickey != "" {
+		value = Value{
+			TransactionId: "1",
+			Context:       "Transaction.Begin",
+			SignedData:    signedData,
+			PublicKey:     &pk,
+		}
+	} else {
+		value = Value{
+			TransactionId: "1",
+			Context:       "Transaction.Begin",
+			SignedData:    signedData,
+		}
 	}
 
 	values := TransparenzsoftwareReadable{
