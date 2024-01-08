@@ -158,3 +158,11 @@ func (s OCMFString) Stop() time.Time {
 func (s OCMFString) Name() string {
 	return "OCMF"
 }
+
+func (s OCMFString) String() (string, error) {
+	payloadMarshal, err := json.Marshal(s.payload)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("OCMF|%s|%s", payloadMarshal, s.signature), nil
+}
