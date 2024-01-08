@@ -39,13 +39,13 @@ type SignedData struct {
 	Format        string   `xml:"format,attr"`
 	Encoding      string   `xml:"encoding,attr"`
 	TransactionId string   `xml:"transactionId,attr"`
-	Data          string   `xml:",chardata"`
+	Data          string   `xml:"innerxml,chardata"`
 }
 
 // Define struct for publicKey
 type PublicKey struct {
 	XMLName xml.Name `xml:"publicKey"`
-	Key     string   `xml:",chardata"`
+	Key     string   `xml:"innerxml,chardata"`
 }
 
 // Define struct for value
