@@ -129,8 +129,6 @@ func (s Payload) getBeginning() (Reading, error) {
 		return Reading{}, fmt.Errorf("No transaction context found in pagination")
 	}
 	for _, reading := range s.Readings {
-		fmt.Printf("%+v\n", reading.Transaction)
-		fmt.Printf("B == %s: %v\n", reading.Transaction, reading.Transaction == "B")
 		if reading.Transaction == "B" {
 			return reading, nil
 		}
