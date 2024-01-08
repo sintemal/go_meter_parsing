@@ -10,4 +10,5 @@ type MeterFormat interface {
 	Signature() string
 	Start() time.Time
 	Stop() time.Time
+	Name() string
 }

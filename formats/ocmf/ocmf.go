@@ -154,3 +154,7 @@ func (s OCMFString) Stop() time.Time {
 	t, _ := time.Parse("2006-01-02T15:04:05,000-0700", end.Time[:len(end.Time)-2])
 	return t
 }
+
+func (s OCMFString) Name() string {
+	return "OCMF"
+}

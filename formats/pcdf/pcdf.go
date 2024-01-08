@@ -155,3 +155,7 @@ func (p PCDF) Start() time.Time {
 func (p PCDF) Stop() time.Time {
 	return p.StopTime
 }
+
+func (p PCDF) Name() string {
+	return "PCDF"
+}

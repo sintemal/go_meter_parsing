@@ -90,3 +90,7 @@ func (cp ChargingProcess) Stop() time.Time {
 	t, _ := time.Parse(time.RFC3339, strings.TrimFunc(cp.MeasurementEnd.Timestamp, unicode.IsSpace)) //no error checking needed as we already checked in Parse()
 	return t
 }
+
+func (s ChargingProcess) Name() string {
+	return "Mennekes"
+}
