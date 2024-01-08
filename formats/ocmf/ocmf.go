@@ -9,7 +9,7 @@ import (
 
 type OCMFString struct {
 	Payload Payload
-	Sig     string
+	Sig     Signature
 }
 
 // LossCompensation structure
@@ -59,6 +59,10 @@ type Payload struct {
 	Readings              []Reading        `json:"RD,omitempty"`
 }
 
+type Signature struct {
+	Signature string `json:"SD,omitempty"`
+}
+
 // https://github.com/SAFE-eV/OCMF-Open-Charge-Metering-Format/blob/master/OCMF-en.md
 func Parse(data string) (OCMFString, error) {
 	sections := strings.Split(data, "|")
@@ -94,9 +98,15 @@ func Parse(data string) (OCMFString, error) {
 		return OCMFString{}, err
 	}
 
+	var signature Signature
+	err = json.Unmarshal([]byte(sections[2]), &signature)
+	if err != nil {
+		return OCMFString{}, err
+	}
+
 	return OCMFString{
 		Payload: payload,
-		Sig:     sections[2],
+		Sig:     signature,
 	}, nil
 }
 
@@ -139,7 +149,7 @@ func (s OCMFString) MeterUnit() string {
 }
 
 func (s OCMFString) Signature() string {
-	return s.Sig
+	return s.Sig.Signature
 }
 
 func (s OCMFString) Start() time.Time {
@@ -164,5 +174,9 @@ func (s OCMFString) String() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("OCMF|%s|%s", payloadMarshal, s.Sig), nil
+	signature, err := json.Marshal(s.Sig)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("OCMF|%s|%s", payloadMarshal, signature), nil
 }
