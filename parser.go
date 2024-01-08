@@ -97,5 +97,7 @@ func WrapTransparenzsoftware(m formats.MeterFormat, data string, publickey strin
 	if err != nil {
 		return "", err
 	}
-	return string(x), nil
+
+	with_header := []byte(xml.Header + string(x))
+	return string(with_header), nil
 }
