@@ -111,7 +111,7 @@ func Parse(data string) (OCMFString, error) {
 }
 
 func (s Payload) getEnd() (Reading, error) {
-	stopCodes := map[string]bool{"B": true, "E": true, "L": true, "R": true, "A": true, "P": true}
+	stopCodes := map[string]bool{"E": true, "L": true, "R": true, "A": true, "P": true}
 	if s.Pagination[0] != 'T' {
 		return Reading{}, fmt.Errorf("No transaction context found in pagination")
 	}

@@ -20,3 +20,64 @@ func TestParsePayloads(t *testing.T) {
 	}
 
 }
+
+func TestSelfGenerate(t *testing.T) {
+	startReading := Reading{
+		Time:           "2020-01-01T00:00:00,000+0000 S",
+		Transaction:    "B",
+		Value:          0,
+		Identification: "1-b:1.8.0",
+		Unit:           "kWh",
+		CurrentType:    "DC",
+		CumulatedLoss:  0,
+		ErrorFlags:     "",
+		Status:         "G",
+	}
+
+	endReading := Reading{
+		Time:           "2020-01-01T01:00:00,000+0000 S",
+		Transaction:    "E",
+		Value:          10,
+		Identification: "1-b:1.8.0",
+		Unit:           "kWh",
+		CurrentType:    "DC",
+		CumulatedLoss:  0,
+		ErrorFlags:     "",
+		Status:         "G",
+	}
+
+	payload := Payload{
+		FormatVersion:         "1.0",
+		GatewayIdentification: "OCPP Virtual Adapter",
+		GatewaySerial:         "1234",
+		GatewayVersion:        "1.0",
+		Pagination:            "T1",
+		MeterVendor:           "Virtual Vendor",
+		MeterModel:            "Virtual Model",
+		MeterSerial:           "1234",
+		MeterFirmware:         "1.0",
+		UserAssignment:        UserAssignment{},
+		LossCompensation:      LossCompensation{},
+		Readings:              []Reading{startReading, endReading},
+	}
+
+	signature := Signature{
+		Signature: "signature",
+	}
+
+	o := OCMFString{
+		Payload: payload,
+		Sig:     signature,
+	}
+
+	ocmfString, err := o.String()
+	if err != nil {
+		t.Errorf("String() error = %v", err)
+	}
+
+	_, err = Parse(ocmfString)
+	if err != nil {
+		t.Errorf("Parse() error = %v", err)
+	}
+
+}
