@@ -8,8 +8,8 @@ import (
 )
 
 type OCMFString struct {
-	payload   Payload
-	signature string
+	Payload Payload
+	Sig     string
 }
 
 // LossCompensation structure
@@ -95,8 +95,8 @@ func Parse(data string) (OCMFString, error) {
 	}
 
 	return OCMFString{
-		payload:   payload,
-		signature: sections[2],
+		Payload: payload,
+		Sig:     sections[2],
 	}, nil
 }
 
@@ -128,29 +128,29 @@ func (s Payload) getBeginning() (Reading, error) {
 	return Reading{}, fmt.Errorf("No beginning found")
 }
 func (s OCMFString) MeterValue() float64 {
-	beginning, _ := s.payload.getBeginning() //no error checking needed as we already checked in Parse()
-	end, _ := s.payload.getEnd()
+	beginning, _ := s.Payload.getBeginning() //no error checking needed as we already checked in Parse()
+	end, _ := s.Payload.getEnd()
 
 	return end.Value - beginning.Value
 }
 
 func (s OCMFString) MeterUnit() string {
-	return s.payload.Readings[0].Unit
+	return s.Payload.Readings[0].Unit
 }
 
 func (s OCMFString) Signature() string {
-	return s.signature
+	return s.Sig
 }
 
 func (s OCMFString) Start() time.Time {
-	beginning, _ := s.payload.getBeginning() //no error checking needed as we already checked in Parse()
+	beginning, _ := s.Payload.getBeginning() //no error checking needed as we already checked in Parse()
 	t, _ := time.Parse("2006-01-02T15:04:05,000-0700", beginning.Time[:len(beginning.Time)-2])
 	return t
 
 }
 
 func (s OCMFString) Stop() time.Time {
-	end, _ := s.payload.getEnd() //no error checking needed as we already checked in Parse()
+	end, _ := s.Payload.getEnd() //no error checking needed as we already checked in Parse()
 	t, _ := time.Parse("2006-01-02T15:04:05,000-0700", end.Time[:len(end.Time)-2])
 	return t
 }
@@ -160,9 +160,9 @@ func (s OCMFString) Name() string {
 }
 
 func (s OCMFString) String() (string, error) {
-	payloadMarshal, err := json.Marshal(s.payload)
+	payloadMarshal, err := json.Marshal(s.Payload)
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("OCMF|%s|%s", payloadMarshal, s.signature), nil
+	return fmt.Sprintf("OCMF|%s|%s", payloadMarshal, s.Sig), nil
 }
