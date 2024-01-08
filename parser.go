@@ -64,7 +64,7 @@ type TransparenzsoftwareReadable struct {
 }
 
 func WrapTransparenzsoftware(m formats.MeterFormat, data string, publickey string) (string, error) {
-	if m.Name() == "Mennekes" {
+	if m.Name() == "Mennekes" { //mennekes can be parsed directly by transparenzsoftware
 		return data, nil
 	}
 
